@@ -80,9 +80,10 @@ and the settings it used, so the configs state what actually ran rather than
 what was intended.
 
 **Before comparing numbers, read [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).**
-It covers what can and cannot be reproduced on other hardware — in particular
-the wall-clock timings, which came from a GPU that is no longer available — and
-two places where the code and the manuscript use different conventions.
+It covers what re-running on other hardware does and does not tell you — in
+particular the wall-clock timings, which came from a GPU that is no longer
+available — and two places where the code and the manuscript use different
+conventions.
 
 ## Repository structure
 

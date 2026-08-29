@@ -2,8 +2,8 @@
 
 Notes for anyone reproducing the results in *Nonlocal Mean Field Schrödinger
 Bridge with Learned Interactions*. They cover what the published runs used, two
-places where the code and the manuscript use different conventions, and what can
-and cannot be reproduced on other hardware.
+places where the code and the manuscript use different conventions, and what
+re-running them on other hardware does and does not tell you.
 
 ## Where the settings live
 
@@ -83,10 +83,16 @@ to agree to the digit, though — GPU kernels, BLAS implementations and
 random-number generation all differ across platforms, so runs on other hardware
 will land nearby rather than on the published values.
 
-**Wall-clock timings cannot be reproduced.** They can be re-measured, but the
-numbers will not match the paper, and comparing timings across different GPUs is
-not meaningful. What makes the paper's timing comparisons fair is not their
-absolute values but that each backend pair ran on the same machine and device.
+**The published timing values cannot be reproduced under the hardware that
+produced them**, since that environment no longer exists. The timing experiment
+itself can be re-run on any GPU: what you get is a valid measurement for your
+machine, not a check against the numbers in the paper, and timings from
+different GPUs should not be compared with each other.
+
+If you do re-run it, keep the comparison internal to one machine. What makes the
+paper's timing results meaningful is not their absolute values but that each
+backend pair ran on the same machine and device, so the ratio between backends
+is the quantity that carries over.
 
 ## Requirements
 
