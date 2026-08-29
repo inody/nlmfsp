@@ -1,0 +1,44 @@
+NLMFSP — Nonlocal Mean Field Schrödinger Bridge with Learned Interactions
+Copyright 2026 Daisuke Inoue
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+--------------------------------------------------------------------------------
+Third-party attribution
+--------------------------------------------------------------------------------
+
+Parts of this software are adapted from DeepGSB:
+
+    Deep Generalized Schrödinger Bridge
+    Guan-Horng Liu, Tianrong Chen, Oswin So, Evangelos A. Theodorou
+    Advances in Neural Information Processing Systems, 2022
+    https://github.com/ghliu/DeepGSB
+    Licensed under the Apache License, Version 2.0
+
+The following parts of src/nlmfsp/networks.py are derived from that work, with
+modifications:
+
+  timestep_embedding
+      Adapted from DeepGSB models/util.py. The frequency bands and the
+      [cos, sin] concatenation are unchanged. Modified to validate the input
+      shape and to require an even embedding dimension.
+
+  ToyValueNet
+      Generalizes the ToyY architecture of DeepGSB models/toy_net.py. The
+      separate time and space branches, their concatenation and the three-layer
+      output head are the same; fixed layer widths were replaced by
+      configuration-driven ones, and optional sinusoidal time embedding and time
+      normalization were added.
+
+  ToyGradientNet
+      Generalizes the ToyZ architecture of DeepGSB models/toy_net.py, in the
+      same way. Here the two branches are summed rather than concatenated, and
+      the output head has two layers, following the upstream design.
+
+tests/test_toy_networks.py checks that these two networks have the same
+parameter counts as the upstream reference under the configuration used in the
+paper.
+
+This NOTICE file is provided voluntarily. DeepGSB does not itself ship a NOTICE
+file, so Apache-2.0 section 4(d) imposes no obligation to carry one forward;
+it is included because the derivation is worth stating plainly.

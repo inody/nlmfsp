@@ -1,4 +1,20 @@
-"""Neural network architectures for NLMFSP."""
+"""Neural network architectures for NLMFSP.
+
+Parts of this module are adapted from DeepGSB (Liu et al., NeurIPS 2022),
+https://github.com/ghliu/DeepGSB, which is distributed under the Apache License
+2.0. Specifically:
+
+- ``timestep_embedding`` follows ``models/util.py`` closely, with shape
+  validation added and the odd-dimension branch removed;
+- ``ToyValueNet`` and ``ToyGradientNet`` generalize the ``ToyY`` and ``ToyZ``
+  architectures of ``models/toy_net.py``, replacing fixed layer widths with
+  configuration-driven ones and adding optional time embedding and time
+  normalization. The layer topology is otherwise the same, which
+  ``tests/test_toy_networks.py`` checks by comparing parameter counts against
+  the upstream reference.
+
+See NOTICE for the full attribution.
+"""
 
 import math
 from typing import List, Optional, Tuple
@@ -49,6 +65,10 @@ def timestep_embedding(
     max_period: int = 10000,
 ) -> torch.Tensor:
     """Create sinusoidal timestep embeddings.
+
+    Adapted from DeepGSB ``models/util.py`` (Apache License 2.0). The frequency
+    bands and the ``[cos, sin]`` concatenation are unchanged; this version
+    validates the input shape and requires an even dimension.
 
     Based on Transformer positional encoding and used in Diffusion Models.
     This encoding helps the network distinguish between different time steps
@@ -434,7 +454,11 @@ class GradientNet(nn.Module):
 
 
 class ToyValueNet(nn.Module):
-    """DeepGSB ToyY-style value network with dual-stream architecture.
+    """Value network generalizing the DeepGSB ``ToyY`` architecture.
+
+    Adapted from DeepGSB ``models/toy_net.py`` (Apache License 2.0): the
+    time/space branches, their concatenation and the three-layer head follow
+    ``ToyY``, with fixed widths replaced by configuration-driven ones.
 
     Processes time and space in separate branches before combining via concatenation.
 
@@ -538,7 +562,11 @@ class ToyValueNet(nn.Module):
 
 
 class ToyGradientNet(nn.Module):
-    """DeepGSB ToyZ-style gradient network with dual-stream architecture.
+    """Gradient network generalizing the DeepGSB ``ToyZ`` architecture.
+
+    Adapted from DeepGSB ``models/toy_net.py`` (Apache License 2.0): the
+    time/space branches, their summation and the two-layer head follow
+    ``ToyZ``, with fixed widths replaced by configuration-driven ones.
 
     Processes time and space in separate branches before combining via addition.
 
