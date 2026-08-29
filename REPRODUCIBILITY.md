@@ -75,13 +75,18 @@ an NVIDIA L40S for the GMM experiments and an NVIDIA GeForce RTX 3090 for the
 V-neck and opinion-dynamics experiments.
 
 **The RTX 3090 environment is no longer available**, and its successor has
-different GPUs. Losses and interaction errors are reproducible anywhere, since
-they do not depend on the hardware. **Wall-clock timings are not**: they can be
-re-measured, but the numbers will not match the paper, and comparing them across
-different GPUs is not meaningful. The timing comparisons in the paper are
-internally consistent, in that each backend pair ran on the same machine and
-device; that is what makes them a fair comparison rather than their absolute
-values.
+different GPUs.
+
+Losses and interaction errors can be recomputed on other hardware: they are
+properties of the trained model rather than of the machine. Do not expect them
+to agree to the digit, though — GPU kernels, BLAS implementations and
+random-number generation all differ across platforms, so runs on other hardware
+will land nearby rather than on the published values.
+
+**Wall-clock timings cannot be reproduced.** They can be re-measured, but the
+numbers will not match the paper, and comparing timings across different GPUs is
+not meaningful. What makes the paper's timing comparisons fair is not their
+absolute values but that each backend pair ran on the same machine and device.
 
 ## Requirements
 

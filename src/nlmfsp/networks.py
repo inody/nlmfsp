@@ -1,8 +1,8 @@
 """Neural network architectures for NLMFSP.
 
-Parts of this module are adapted from DeepGSB (Liu et al., NeurIPS 2022),
+Portions of this file are adapted from DeepGSB (Liu et al., NeurIPS 2022),
 https://github.com/ghliu/DeepGSB, which is distributed under the Apache License
-2.0. Specifically:
+2.0, **and have been modified** for NLMFSP. Specifically:
 
 - ``timestep_embedding`` follows ``models/util.py`` closely, with shape
   validation added and the odd-dimension branch removed;

@@ -1,0 +1,57 @@
+cff-version: 1.2.0
+title: "NLMFSP: Nonlocal Mean Field Schrödinger Bridge with Learned Interactions"
+message: >-
+  If you use this software, please cite the paper it accompanies, given under
+  preferred-citation below.
+type: software
+authors:
+  - given-names: Daisuke
+    family-names: Inoue
+    orcid: "https://orcid.org/0000-0003-2877-3438"
+    affiliation: "Department of Mathematics, Imperial College London"
+  - given-names: Dante
+    family-names: Kalise
+    orcid: "https://orcid.org/0000-0003-2327-1957"
+    affiliation: "Department of Mathematics, Imperial College London"
+  - given-names: Mathieu
+    family-names: Laurière
+    orcid: "https://orcid.org/0000-0002-4380-1399"
+    affiliation: "NYU-ECNU Institute of Mathematical Sciences, NYU Shanghai"
+repository-code: "https://github.com/inody/nlmfsp"
+abstract: >-
+  Reference implementation of a four-stage alternating scheme that solves
+  mean-field Schrödinger bridge problems with nonlocal interactions by replacing
+  the pairwise interaction sums with neural surrogates, reducing the per-step
+  cost from quadratic to linear in the population size.
+keywords:
+  - Schrödinger bridge
+  - mean-field control
+  - forward-backward stochastic differential equations
+  - neural surrogates
+  - nonlocal interactions
+license: Apache-2.0
+version: "1.0.0"
+date-released: "2026-08-29"
+
+preferred-citation:
+  type: article
+  title: "Nonlocal Mean Field Schrödinger Bridge with Learned Interactions"
+  authors:
+    - given-names: Daisuke
+      family-names: Inoue
+      orcid: "https://orcid.org/0000-0003-2877-3438"
+    - given-names: Dante
+      family-names: Kalise
+      orcid: "https://orcid.org/0000-0003-2327-1957"
+    - given-names: Mathieu
+      family-names: Laurière
+      orcid: "https://orcid.org/0000-0002-4380-1399"
+  year: 2026
+  journal: "arXiv"
+  identifiers:
+    - type: other
+      value: "arXiv:2606.04265"
+      description: arXiv identifier
+    - type: doi
+      value: "10.48550/arXiv.2606.04265"
+  url: "https://arxiv.org/abs/2606.04265"
