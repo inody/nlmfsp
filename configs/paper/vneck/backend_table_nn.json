@@ -1,0 +1,126 @@
+{
+  "problem_type": "vneck_navigation",
+  "name": "vneck_backend_table_nn",
+  "description": "V-neck backend comparison, learned surrogate (M_int=200, width 64). Table tab:vneck_backend_comparison; sweep seed over 310-317. [derived from run vneck_pedestrian_visual_backend_nn_h64_int200_gpu_seed310/exp_20260611_133504; see configs/paper/manifest/MANIFEST.md]",
+  "distributions": {
+    "rho_0": {
+      "type": "gaussian",
+      "mean": [
+        -7.0,
+        0.0
+      ],
+      "std": 0.447214
+    },
+    "rho_1": {
+      "type": "gaussian",
+      "mean": [
+        7.0,
+        0.0
+      ],
+      "std": 0.447214
+    }
+  },
+  "base_functions": {
+    "drift": {
+      "type": "constant",
+      "value": [
+        6.0,
+        0.0
+      ],
+      "description": "Constant rightward drift to help navigate through bottleneck"
+    },
+    "cost": {
+      "type": "vneck_parabolic",
+      "c_sq": 0.36,
+      "coef": 5.0,
+      "penalty": 1500.0,
+      "description": "V-neck shaped obstacle: 5*x^2 - y^2 < -0.36"
+    }
+  },
+  "visualization": {
+    "xlim": [
+      -8.0,
+      8.0
+    ],
+    "ylim": [
+      -4.0,
+      4.0
+    ]
+  },
+  "interactions": {
+    "interaction_backend": "nn",
+    "drift_type": "zero",
+    "cost_type": "pedestrian_visual",
+    "cost_params": {
+      "weight": 1.0,
+      "sigma": 1.0
+    }
+  },
+  "training": {
+    "n_outer_iterations": 100,
+    "n_inner_steps": 250,
+    "n_agents": 1000,
+    "n_agents_test": 1000,
+    "T": 2.0,
+    "dt": 0.01,
+    "activation": "silu",
+    "hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_hidden_dims": [
+      64,
+      64,
+      64
+    ],
+    "interaction_t_hidden_dims": [
+      64,
+      64
+    ],
+    "interaction_activation": "silu",
+    "learn_interaction_drift": false,
+    "learn_interaction_cost": true,
+    "standardize_interaction_targets": true,
+    "interaction_input_scale": 7.0,
+    "interaction_query_chunk_size": 200,
+    "interaction_ref_chunk_size": 200,
+    "interaction_time_block_size": 50,
+    "resample_interaction_sample": false,
+    "evaluate_interaction_cpu": false,
+    "sigma": 1.0,
+    "lambda_ipf": 1.0,
+    "lambda_td": 1.0,
+    "lambda_fk": 1.0,
+    "lambda_boundary": 1.0,
+    "td_horizon": 1,
+    "td_bootstrap_from_target": true,
+    "fk_loss_norm": "l1",
+    "detach_interaction_drift_divergence": false,
+    "optimizer_type": "adamw",
+    "optimizer_weight_decay": 0.0,
+    "lr_scheduler_type": "exponential",
+    "log_interval": 1,
+    "checkpoint_interval": 1,
+    "seed": 310,
+    "ema_decay": 0.99,
+    "ema_start_step": 0,
+    "ema_update_interval": 1,
+    "use_time_embedding": false,
+    "time_input_mode": "raw",
+    "time_embed_dim": 128,
+    "use_time_index_normalization": false,
+    "time_index_interval": 100.0,
+    "interaction_steps": 200,
+    "lr_value": 0.001,
+    "lr_grad": 0.0005,
+    "lr_interaction": 0.001,
+    "lr_decay": 0.999,
+    "use_multistep_td": true,
+    "device": "auto"
+  }
+}

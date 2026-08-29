@@ -1,0 +1,139 @@
+{
+  "method": {
+    "interaction_backend": "nn",
+    "method_param": "H=128",
+    "interaction_hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "learn_interaction_drift": false,
+    "learn_interaction_cost": true
+  },
+  "config": {
+    "n_agents": 900,
+    "interaction_backend": "nn",
+    "random_batch_size": null,
+    "interaction_hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "learn_interaction_drift": false,
+    "learn_interaction_cost": true,
+    "n_outer_iterations": 10,
+    "n_inner_steps": 250,
+    "n_interaction_steps": 100,
+    "standardize_interaction_targets": true,
+    "interaction_input_scale": 7.0,
+    "dt": 0.01,
+    "learning_rate_value": 0.001,
+    "learning_rate_grad": 0.0005,
+    "learning_rate_interaction": 0.001,
+    "int_drift_weight": 1.0,
+    "int_cost_weight": 1.0,
+    "sigma": 1.0,
+    "training_seed": 300,
+    "validation_seed": 300,
+    "visualization_seed": 300
+  },
+  "timing": {
+    "total_wall_time_sec": 1710.4202411174774,
+    "drift_step_time_sec_mean": 167.40803442001342,
+    "interaction_training_time_sec": 36.337822675704956,
+    "checkpoint_eval_time_sec_total": 7.934208154678345,
+    "interaction_step_time_sec_mean": 3.6337822675704956,
+    "random_batch_sampling_time_sec_total": 0.0,
+    "random_batch_eval_time_sec_total": 0.0,
+    "random_batch_drift_sampling_time_sec_total": 0.0,
+    "random_batch_drift_eval_time_sec_total": 0.0,
+    "random_batch_drift_call_count": 0.0,
+    "random_batch_cost_sampling_time_sec_total": 0.0,
+    "random_batch_cost_eval_time_sec_total": 0.0,
+    "random_batch_cost_call_count": 0.0,
+    "nn_drift_inference_time_sec_total": 0.0,
+    "nn_drift_call_count": 0.0,
+    "nn_cost_inference_time_sec_total": 2.142841731198132,
+    "nn_cost_call_count": 5000.0,
+    "nn_inference_time_sec_total": 2.142841731198132,
+    "exact_drift_eval_time_sec_total": 33.49552482762374,
+    "exact_drift_call_count": 3004000.0,
+    "exact_cost_eval_time_sec_total": 0.0,
+    "exact_cost_call_count": 0.0,
+    "exact_interaction_eval_time_sec_total": 33.49552482762374
+  },
+  "final_losses": {
+    "loss_ipf_forward": 0.6169846653938293,
+    "loss_ipf_backward": 0.6906723976135254,
+    "loss_td_forward": 22.286222457885742,
+    "loss_td_backward": 20.6175594329834,
+    "loss_fk_forward": 0.6677542924880981,
+    "loss_fk_backward": 1.0120432376861572,
+    "loss_boundary_forward": 0.305262953042984,
+    "loss_boundary_backward": 0.8841078877449036
+  },
+  "initial_losses": {
+    "loss_ipf_forward": 1.4966143369674683,
+    "loss_ipf_backward": 18.781187057495117,
+    "loss_td_forward": 2657.03076171875,
+    "loss_td_backward": 10944.548828125,
+    "loss_fk_forward": 18.795848846435547,
+    "loss_fk_backward": 44.01546096801758,
+    "loss_boundary_forward": 30.054859161376953,
+    "loss_boundary_backward": 1111.857666015625
+  },
+  "analytical_losses": {
+    "loss_ipf_forward_analytical": 0.7318164110183716,
+    "loss_ipf_backward_analytical": 0.30882203578948975,
+    "loss_td_forward_analytical": 24.195030212402344,
+    "loss_td_backward_analytical": 12.08189868927002,
+    "loss_fk_forward_analytical": 0.6805938482284546,
+    "loss_fk_backward_analytical": 0.9830989837646484,
+    "loss_boundary_forward_analytical": 0.11539147049188614,
+    "loss_boundary_backward_analytical": 0.7062081098556519
+  },
+  "final_total_losses": {
+    "forward_ipf_td_fk": 23.57096141576767,
+    "backward_ipf_td_fk": 22.32027506828308,
+    "bidirectional_ipf_td_fk": 45.89123648405075,
+    "forward_with_boundary": 23.876224368810654,
+    "backward_with_boundary": 23.204382956027985,
+    "bidirectional_with_boundary": 47.08060732483864
+  },
+  "interaction_errors": {
+    "forward_drift": {
+      "relative_l2": 0.0,
+      "mse": 0.0
+    },
+    "forward_cost": {
+      "relative_l2": 0.1920415759086609,
+      "mse": 0.0016917396569624543
+    },
+    "backward_drift": {
+      "relative_l2": 0.0,
+      "mse": 0.0
+    },
+    "backward_cost": {
+      "relative_l2": 0.09612377732992172,
+      "mse": 0.00041226414032280445
+    }
+  },
+  "mean_true": [
+    6.990012168884277,
+    -0.009224510751664639
+  ],
+  "mean_pred": [
+    6.852954864501953,
+    -0.026084477081894875
+  ],
+  "mean_error": 0.13809041678905487,
+  "std_true": [
+    0.45737242698669434,
+    0.43315139412879944
+  ],
+  "std_pred": [
+    0.5653070211410522,
+    0.4928693175315857
+  ],
+  "std_error": 0.12335358560085297
+}

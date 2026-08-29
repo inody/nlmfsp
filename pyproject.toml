@@ -1,0 +1,45 @@
+[project]
+name = "nlmfsp"
+version = "0.1.0"
+description = "Nonlocal Mean Field Schrödinger Bridge using Deep Learning"
+readme = "readme.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "torch>=2.4.0,<2.5",
+    "torch-ema>=0.3.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "matplotlib>=3.7.0",
+    "tqdm>=4.65.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["nlmfsp*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow (run with -m 'not slow' to skip)",
+    "integration: marks tests as integration tests",
+]
+addopts = "-v --tb=short"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+]

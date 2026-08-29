@@ -1,0 +1,680 @@
+{
+  "experiment_id": "exp_20260311_040512_lry1e-03_lrz5e-04_n700_ipf1_td1_fk1_b1_ema0.990",
+  "scenario_name": "learned_gmm_agents_n700_learned",
+  "method": "learned",
+  "timestamp": "2026-03-11T04:05:12.147078",
+  "config": {
+    "dim": 2,
+    "T": 1.0,
+    "dt": 0.01,
+    "n_agents": 700,
+    "n_agents_test": 700,
+    "learn_interaction_drift": true,
+    "learn_interaction_cost": false,
+    "evaluate_interaction_cpu": false,
+    "resample_interaction_sample": false,
+    "interaction_query_chunk_size": 200,
+    "interaction_ref_chunk_size": 200,
+    "interaction_time_block_size": 50,
+    "problem_config_snapshot": {
+      "name": "gmm_navigation",
+      "problem_type": "gmm_navigation",
+      "description": "GMM navigation (Option B: learned interactions) mirroring alternating baseline settings.",
+      "distributions": {
+        "rho_0": {
+          "type": "gaussian",
+          "mean": [
+            0.0,
+            0.0
+          ],
+          "std": 1.0
+        },
+        "rho_1": {
+          "type": "gaussian_mixture",
+          "components": [
+            {
+              "mean": [
+                16.0,
+                0.0
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                11.314,
+                11.314
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                0.0,
+                16.0
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                -11.314,
+                11.314
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                -16.0,
+                0.0
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                -11.314,
+                -11.314
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                0.0,
+                -16.0
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                11.314,
+                -11.314
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            }
+          ]
+        }
+      },
+      "interactions": {
+        "drift_type": "gaussian",
+        "drift_params": {
+          "sigma": 2.0,
+          "weight": 1.0
+        },
+        "cost_type": "zero"
+      },
+      "base_functions": {
+        "drift": {
+          "type": "zero"
+        },
+        "cost": {
+          "type": "multi_obstacle",
+          "obstacles": [
+            {
+              "center": [
+                6.0,
+                6.0
+              ],
+              "radius": 1.5,
+              "penalty": 1500.0,
+              "description": "Upper-right obstacle",
+              "mode": "soft",
+              "beta": 6.0
+            },
+            {
+              "center": [
+                6.0,
+                -6.0
+              ],
+              "radius": 1.5,
+              "penalty": 1500.0,
+              "description": "Lower-right obstacle",
+              "mode": "soft",
+              "beta": 6.0
+            },
+            {
+              "center": [
+                -6.0,
+                -6.0
+              ],
+              "radius": 1.5,
+              "penalty": 1500.0,
+              "description": "Lower-left obstacle",
+              "mode": "soft",
+              "beta": 6.0
+            }
+          ]
+        }
+      },
+      "training": {
+        "learn_interaction_drift": true,
+        "learn_interaction_cost": false,
+        "n_outer_iterations": 100,
+        "n_inner_steps": 250,
+        "lr_value": 0.001,
+        "lr_grad": 0.0005,
+        "optimizer_type": "adamw",
+        "lr_scheduler_type": "exponential",
+        "lr_decay": 0.999,
+        "grad_clip": null,
+        "sigma": 1.0,
+        "lambda_ipf": 1.0,
+        "lambda_td": 1.0,
+        "lambda_fk": 1.0,
+        "lambda_boundary": 1.0,
+        "fk_loss_norm": "l1",
+        "td_bootstrap_from_target": true,
+        "use_multistep_td": true,
+        "hidden_dims": [
+          128,
+          128,
+          128
+        ],
+        "t_hidden_dims": [
+          128,
+          128
+        ],
+        "activation": "silu",
+        "use_time_embedding": false,
+        "use_time_index_normalization": true,
+        "time_index_interval": 100.0,
+        "ema_decay": 0.99,
+        "ema_start_step": 0,
+        "ema_update_interval": 1,
+        "seed": 42,
+        "log_interval": 1,
+        "checkpoint_interval": 1,
+        "device": "auto",
+        "n_agents": 1000,
+        "lr_interaction": 0.0005,
+        "interaction_steps": 10,
+        "interaction_hidden_dims": [
+          128,
+          128,
+          128
+        ],
+        "interaction_t_hidden_dims": [
+          128,
+          128
+        ],
+        "interaction_activation": "silu",
+        "interaction_query_chunk_size": 200,
+        "interaction_ref_chunk_size": 200,
+        "interaction_time_block_size": 50,
+        "resample_interaction_sample": false
+      },
+      "visualization": {
+        "xlim": [
+          -20.0,
+          20.0
+        ],
+        "ylim": [
+          -20.0,
+          20.0
+        ]
+      }
+    },
+    "n_outer_iterations": 10,
+    "n_inner_steps": 250,
+    "n_interaction_steps": 50,
+    "learning_rate_interaction": 0.0001,
+    "learning_rate_value": 0.001,
+    "learning_rate_grad": 0.0005,
+    "hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "t_hidden_dims": [
+      128,
+      128
+    ],
+    "activation": "silu",
+    "interaction_hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "interaction_t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_activation": "silu",
+    "use_time_embedding": false,
+    "time_embed_dim": 128,
+    "use_time_index_normalization": true,
+    "time_index_interval": 100.0,
+    "lambda_ipf": 1.0,
+    "lambda_td": 1.0,
+    "lambda_fk": 1.0,
+    "lambda_boundary": 1.0,
+    "fk_loss_norm": "l1",
+    "td_horizon": 1,
+    "td_bootstrap_from_target": true,
+    "use_multistep_td_loss": true,
+    "optimizer_type": "adamw",
+    "optimizer_momentum": null,
+    "optimizer_weight_decay": 0.0,
+    "lr_scheduler_type": "exponential",
+    "lr_decay_step": null,
+    "ema_decay": 0.99,
+    "ema_start_step": 0,
+    "ema_update_interval": 1,
+    "sigma": 1.0,
+    "drift_type": "gaussian",
+    "cost_type": "zero",
+    "int_drift_weight": 1.0,
+    "int_drift_sigma": 2.0,
+    "int_drift_strength": null,
+    "int_cost_weight": 1.0,
+    "int_cost_sigma": 1.0,
+    "int_cost_strength": null,
+    "base_drift_type": "zero",
+    "base_drift_value": null,
+    "base_cost_type": "zero",
+    "base_cost_weight": null,
+    "n_hutchinson_samples": 1,
+    "lr_decay_gamma": 0.999,
+    "grad_clip": null,
+    "log_interval": 1,
+    "checkpoint_interval": 1,
+    "verbose": true,
+    "output_dir": "outputs/experiments/learned_gmm_agents_n700_learned/exp_20260311_040512_lry1e-03_lrz5e-04_n700_ipf1_td1_fk1_b1_ema0.990",
+    "log_dir": "outputs/experiments/learned_gmm_agents_n700_learned/exp_20260311_040512_lry1e-03_lrz5e-04_n700_ipf1_td1_fk1_b1_ema0.990/logs",
+    "checkpoint_dir": "outputs/experiments/learned_gmm_agents_n700_learned/exp_20260311_040512_lry1e-03_lrz5e-04_n700_ipf1_td1_fk1_b1_ema0.990/checkpoints",
+    "experiment_root": "outputs/experiments",
+    "experiment_id": null,
+    "device": "cuda",
+    "seed": 42
+  },
+  "cli_args": {
+    "learn_interaction_drift": true,
+    "learn_interaction_cost": false,
+    "evaluate_interaction_cpu": null,
+    "interaction_steps": 50,
+    "interaction_query_chunk_size": 200,
+    "interaction_ref_chunk_size": 200,
+    "interaction_time_block_size": 50,
+    "resample_interaction_sample": false,
+    "interaction_hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "interaction_t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_activation": "silu",
+    "lr_interaction": 0.0001,
+    "base_drift_type": null,
+    "base_cost_type": null,
+    "device": "cuda",
+    "drift_type": "gaussian",
+    "cost_type": "zero",
+    "int_drift_weight": 1.0,
+    "int_drift_sigma": 2.0,
+    "int_drift_strength": null,
+    "int_cost_weight": null,
+    "int_cost_sigma": null,
+    "int_cost_strength": null,
+    "base_cost_weight": null,
+    "n_agents": 700,
+    "n_agents_test": null,
+    "n_outer_iterations": 10,
+    "n_inner_steps": 250,
+    "dt": null,
+    "lr_value": 0.001,
+    "lr_grad": 0.0005,
+    "lr_decay": 0.999,
+    "lr_scheduler_type": "exponential",
+    "lr_step_size": null,
+    "optimizer_type": "adamw",
+    "optimizer_momentum": null,
+    "optimizer_weight_decay": null,
+    "grad_clip": null,
+    "sigma": 1.0,
+    "lambda_ipf": 1.0,
+    "lambda_td": 1.0,
+    "lambda_fk": 1.0,
+    "lambda_boundary": 1.0,
+    "td_horizon": null,
+    "use_multistep_td": true,
+    "td_bootstrap_from_target": true,
+    "hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "t_hidden_dims": [
+      128,
+      128
+    ],
+    "fk_loss_norm": "l1",
+    "use_loop": false,
+    "use_time_embedding": false,
+    "time_embed_dim": null,
+    "use_time_index_normalization": true,
+    "time_index_interval": 100.0,
+    "activation": "silu",
+    "seed": 42,
+    "T": null,
+    "log_interval": 1,
+    "checkpoint_interval": 1,
+    "resume": null,
+    "metrics_output": null,
+    "skip_plots": true,
+    "ema_decay": 0.99,
+    "ema_start_step": 0,
+    "ema_update_interval": 1,
+    "no_experiment_dir": false,
+    "problem_config": "configs/problems/gmm_navigation_gaussian_learned.json",
+    "name": "gmm_agents_n700_learned"
+  },
+  "config_merged": {
+    "dim": 2,
+    "T": null,
+    "dt": null,
+    "n_agents": 700,
+    "n_agents_test": null,
+    "learn_interaction_drift": true,
+    "learn_interaction_cost": false,
+    "evaluate_interaction_cpu": null,
+    "resample_interaction_sample": false,
+    "interaction_query_chunk_size": 200,
+    "interaction_ref_chunk_size": 200,
+    "interaction_time_block_size": 50,
+    "problem_config_snapshot": {
+      "name": "gmm_navigation",
+      "problem_type": "gmm_navigation",
+      "description": "GMM navigation (Option B: learned interactions) mirroring alternating baseline settings.",
+      "distributions": {
+        "rho_0": {
+          "type": "gaussian",
+          "mean": [
+            0.0,
+            0.0
+          ],
+          "std": 1.0
+        },
+        "rho_1": {
+          "type": "gaussian_mixture",
+          "components": [
+            {
+              "mean": [
+                16.0,
+                0.0
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                11.314,
+                11.314
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                0.0,
+                16.0
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                -11.314,
+                11.314
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                -16.0,
+                0.0
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                -11.314,
+                -11.314
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                0.0,
+                -16.0
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            },
+            {
+              "mean": [
+                11.314,
+                -11.314
+              ],
+              "std": 1.0,
+              "weight": 0.125
+            }
+          ]
+        }
+      },
+      "interactions": {
+        "drift_type": "gaussian",
+        "drift_params": {
+          "sigma": 2.0,
+          "weight": 1.0
+        },
+        "cost_type": "zero"
+      },
+      "base_functions": {
+        "drift": {
+          "type": "zero"
+        },
+        "cost": {
+          "type": "multi_obstacle",
+          "obstacles": [
+            {
+              "center": [
+                6.0,
+                6.0
+              ],
+              "radius": 1.5,
+              "penalty": 1500.0,
+              "description": "Upper-right obstacle",
+              "mode": "soft",
+              "beta": 6.0
+            },
+            {
+              "center": [
+                6.0,
+                -6.0
+              ],
+              "radius": 1.5,
+              "penalty": 1500.0,
+              "description": "Lower-right obstacle",
+              "mode": "soft",
+              "beta": 6.0
+            },
+            {
+              "center": [
+                -6.0,
+                -6.0
+              ],
+              "radius": 1.5,
+              "penalty": 1500.0,
+              "description": "Lower-left obstacle",
+              "mode": "soft",
+              "beta": 6.0
+            }
+          ]
+        }
+      },
+      "training": {
+        "learn_interaction_drift": true,
+        "learn_interaction_cost": false,
+        "n_outer_iterations": 100,
+        "n_inner_steps": 250,
+        "lr_value": 0.001,
+        "lr_grad": 0.0005,
+        "optimizer_type": "adamw",
+        "lr_scheduler_type": "exponential",
+        "lr_decay": 0.999,
+        "grad_clip": null,
+        "sigma": 1.0,
+        "lambda_ipf": 1.0,
+        "lambda_td": 1.0,
+        "lambda_fk": 1.0,
+        "lambda_boundary": 1.0,
+        "fk_loss_norm": "l1",
+        "td_bootstrap_from_target": true,
+        "use_multistep_td": true,
+        "hidden_dims": [
+          128,
+          128,
+          128
+        ],
+        "t_hidden_dims": [
+          128,
+          128
+        ],
+        "activation": "silu",
+        "use_time_embedding": false,
+        "use_time_index_normalization": true,
+        "time_index_interval": 100.0,
+        "ema_decay": 0.99,
+        "ema_start_step": 0,
+        "ema_update_interval": 1,
+        "seed": 42,
+        "log_interval": 1,
+        "checkpoint_interval": 1,
+        "device": "auto",
+        "n_agents": 1000,
+        "lr_interaction": 0.0005,
+        "interaction_steps": 10,
+        "interaction_hidden_dims": [
+          128,
+          128,
+          128
+        ],
+        "interaction_t_hidden_dims": [
+          128,
+          128
+        ],
+        "interaction_activation": "silu",
+        "interaction_query_chunk_size": 200,
+        "interaction_ref_chunk_size": 200,
+        "interaction_time_block_size": 50,
+        "resample_interaction_sample": false
+      },
+      "visualization": {
+        "xlim": [
+          -20.0,
+          20.0
+        ],
+        "ylim": [
+          -20.0,
+          20.0
+        ]
+      }
+    },
+    "n_outer_iterations": 10,
+    "n_inner_steps": 250,
+    "n_interaction_steps": 50,
+    "learning_rate_interaction": 0.0001,
+    "learning_rate_value": 0.001,
+    "learning_rate_grad": 0.0005,
+    "hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "t_hidden_dims": [
+      128,
+      128
+    ],
+    "activation": "silu",
+    "interaction_hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "interaction_t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_activation": "silu",
+    "use_time_embedding": false,
+    "time_embed_dim": null,
+    "use_time_index_normalization": true,
+    "time_index_interval": 100.0,
+    "lambda_ipf": 1.0,
+    "lambda_td": 1.0,
+    "lambda_fk": 1.0,
+    "lambda_boundary": 1.0,
+    "fk_loss_norm": "l1",
+    "td_horizon": null,
+    "td_bootstrap_from_target": true,
+    "use_multistep_td_loss": true,
+    "optimizer_type": "adamw",
+    "optimizer_momentum": null,
+    "optimizer_weight_decay": null,
+    "lr_scheduler_type": "exponential",
+    "lr_decay_step": null,
+    "ema_decay": 0.99,
+    "ema_start_step": 0,
+    "ema_update_interval": 1,
+    "sigma": 1.0,
+    "drift_type": "gaussian",
+    "cost_type": "zero",
+    "int_drift_weight": 1.0,
+    "int_drift_sigma": 2.0,
+    "int_drift_strength": null,
+    "int_cost_weight": null,
+    "int_cost_sigma": null,
+    "int_cost_strength": null,
+    "base_drift_type": null,
+    "base_drift_value": null,
+    "base_cost_type": null,
+    "base_cost_weight": null,
+    "n_hutchinson_samples": 1,
+    "lr_decay_gamma": 0.999,
+    "grad_clip": null,
+    "log_interval": 1,
+    "checkpoint_interval": 1,
+    "verbose": true,
+    "output_dir": "outputs/experiments/learned_gmm_agents_n700_learned/exp_20260311_040512_lry1e-03_lrz5e-04_n700_ipf1_td1_fk1_b1_ema0.990",
+    "log_dir": "outputs/experiments/learned_gmm_agents_n700_learned/exp_20260311_040512_lry1e-03_lrz5e-04_n700_ipf1_td1_fk1_b1_ema0.990/logs",
+    "checkpoint_dir": "outputs/experiments/learned_gmm_agents_n700_learned/exp_20260311_040512_lry1e-03_lrz5e-04_n700_ipf1_td1_fk1_b1_ema0.990/checkpoints",
+    "experiment_root": "outputs/experiments",
+    "experiment_id": null,
+    "device": "cuda",
+    "seed": 42,
+    "interaction_steps": 50,
+    "lr_interaction": 0.0001,
+    "lr_value": 0.001,
+    "lr_grad": 0.0005,
+    "lr_decay": 0.999,
+    "lr_step_size": null,
+    "use_multistep_td": true,
+    "use_loop": false,
+    "resume": null,
+    "metrics_output": null,
+    "skip_plots": true,
+    "no_experiment_dir": false,
+    "problem_config": "configs/problems/gmm_navigation_gaussian_learned.json",
+    "name": "gmm_agents_n700_learned"
+  }
+}
