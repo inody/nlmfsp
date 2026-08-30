@@ -6,8 +6,10 @@ from the config file, and it decides how many outer iterations are left. Since
 ``--resume`` is part of the published command line, it needs its own check.
 """
 
+import shutil
 import subprocess
 import sys
+import uuid
 from pathlib import Path
 
 import pytest
@@ -31,10 +33,24 @@ def run(command: list[str], timeout: int = 600) -> subprocess.CompletedProcess:
                           timeout=timeout, cwd=REPO_ROOT)
 
 
+@pytest.fixture
+def scenario_dir():
+    """A scenario name no other run can collide with, removed afterwards.
+
+    The engine writes under outputs/experiments/<name>/, which persists between
+    pytest invocations. Deriving the name from anything pytest reuses -- the
+    tmp_path leaf, for instance -- makes a second run find the first run's
+    experiment directory still sitting there.
+    """
+    scenario = f"resume_gate_{uuid.uuid4().hex[:12]}"
+    path = REPO_ROOT / "outputs" / "experiments" / scenario
+    yield scenario, path
+    shutil.rmtree(path, ignore_errors=True)
+
+
 @pytest.mark.slow
-def test_interrupted_run_resumes_to_completion(tmp_path):
-    scenario = f"resume_gate_{tmp_path.name}"
-    experiments = REPO_ROOT / "outputs" / "experiments" / scenario
+def test_interrupted_run_resumes_to_completion(scenario_dir):
+    scenario, experiments = scenario_dir
 
     started = run([sys.executable, str(ENGINE), "--problem-config", str(CONFIG),
                    "--name", scenario, *SMALL_RUN])
