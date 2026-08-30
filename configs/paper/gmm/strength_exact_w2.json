@@ -1,7 +1,7 @@
 {
   "problem_type": "gmm_navigation",
-  "name": "gmm_backend_table_rb",
-  "description": "GMM backend comparison, random batch (M_RB=128). Table tab:gmm_backend_comparison; sweep seed over 200-204. [derived from run analytical_gmm_navigation_no_obstacle/exp_20260404_161825; see configs/paper/manifest/MANIFEST.md]",
+  "name": "gmm_strength_exact_w2",
+  "description": "GMM interaction-strength sweep at w=2, analytical evaluation. Figure gmm_interaction_strength_compare. [derived from run analytical_gmm_navigation/exp_20260528_125418; see configs/paper/manifest/MANIFEST.md]",
   "distributions": {
     "rho_0": {
       "type": "gaussian",
@@ -86,7 +86,42 @@
       "type": "zero"
     },
     "cost": {
-      "type": "zero"
+      "type": "multi_obstacle",
+      "obstacles": [
+        {
+          "center": [
+            6.0,
+            6.0
+          ],
+          "radius": 1.5,
+          "penalty": 1500.0,
+          "description": "Upper-right obstacle",
+          "mode": "soft",
+          "beta": 6.0
+        },
+        {
+          "center": [
+            6.0,
+            -6.0
+          ],
+          "radius": 1.5,
+          "penalty": 1500.0,
+          "description": "Lower-right obstacle",
+          "mode": "soft",
+          "beta": 6.0
+        },
+        {
+          "center": [
+            -6.0,
+            -6.0
+          ],
+          "radius": 1.5,
+          "penalty": 1500.0,
+          "description": "Lower-left obstacle",
+          "mode": "soft",
+          "beta": 6.0
+        }
+      ]
     }
   },
   "visualization": {
@@ -100,18 +135,17 @@
     ]
   },
   "interactions": {
-    "interaction_backend": "random_batch",
-    "random_batch_size": 128,
+    "interaction_backend": "exact",
     "drift_type": "gaussian",
     "drift_params": {
-      "weight": 1.0,
+      "weight": 2.0,
       "sigma": 2.0
     },
     "cost_type": "zero"
   },
   "training": {
     "n_outer_iterations": 100,
-    "n_inner_steps": 200,
+    "n_inner_steps": 250,
     "n_agents": 1000,
     "n_agents_test": 1000,
     "T": 1.0,
@@ -128,9 +162,9 @@
     ],
     "learn_interaction_drift": false,
     "learn_interaction_cost": false,
-    "interaction_query_chunk_size": 500,
-    "interaction_ref_chunk_size": 500,
-    "interaction_time_block_size": 100,
+    "interaction_query_chunk_size": 200,
+    "interaction_ref_chunk_size": 200,
+    "interaction_time_block_size": 50,
     "resample_interaction_sample": false,
     "evaluate_interaction_cpu": false,
     "sigma": 1.0,
@@ -141,18 +175,20 @@
     "td_horizon": 1,
     "td_bootstrap_from_target": true,
     "fk_loss_norm": "l1",
+    "detach_interaction_drift_divergence": false,
     "optimizer_type": "adamw",
     "optimizer_weight_decay": 0.0,
     "lr_scheduler_type": "exponential",
     "log_interval": 1,
     "checkpoint_interval": 1,
-    "seed": 200,
+    "seed": 401,
     "ema_decay": 0.99,
     "ema_start_step": 0,
     "ema_update_interval": 1,
     "use_time_embedding": false,
+    "time_input_mode": "raw",
     "time_embed_dim": 128,
-    "use_time_index_normalization": true,
+    "use_time_index_normalization": false,
     "time_index_interval": 100.0,
     "interaction_steps": 0,
     "lr_value": 0.001,

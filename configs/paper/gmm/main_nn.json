@@ -1,7 +1,7 @@
 {
   "problem_type": "gmm_navigation",
   "name": "gmm_main_nn",
-  "description": "GMM navigation, learned surrogate (w=2, M_int=100). Figures gmm_nav_intdrift2. [derived from run gmm_interaction_strength_nn/exp_20260529_151651; see configs/paper/manifest/MANIFEST.md]",
+  "description": "GMM navigation, learned surrogate. Figures gmm_nav_intdrift2. [derived from run gmm_interaction_strength_nn/exp_20260529_151651; see configs/paper/manifest/MANIFEST.md]",
   "distributions": {
     "rho_0": {
       "type": "gaussian",

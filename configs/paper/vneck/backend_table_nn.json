@@ -1,7 +1,7 @@
 {
   "problem_type": "vneck_navigation",
   "name": "vneck_backend_table_nn",
-  "description": "V-neck backend comparison, learned surrogate (M_int=200, width 64). Table tab:vneck_backend_comparison; sweep seed over 310-317. [derived from run vneck_pedestrian_visual_backend_nn_h64_int200_gpu_seed310/exp_20260611_133504; see configs/paper/manifest/MANIFEST.md]",
+  "description": "V-neck backend comparison, learned surrogate. Table tab:vneck_backend_comparison; average over seeds 310-317. [derived from run vneck_pedestrian_visual_backend_nn_h64_int200_gpu_seed310/exp_20260611_133504; see configs/paper/manifest/MANIFEST.md]",
   "distributions": {
     "rho_0": {
       "type": "gaussian",

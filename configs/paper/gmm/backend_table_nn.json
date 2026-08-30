@@ -1,7 +1,7 @@
 {
   "problem_type": "gmm_navigation",
   "name": "gmm_backend_table_nn",
-  "description": "GMM backend comparison, learned surrogate (M_int=200, width 64). Table tab:gmm_backend_comparison; sweep seed over 200-204. [derived from run learned_gmm_navigation_h64_no_obstacle/exp_20260411_084338; see configs/paper/manifest/MANIFEST.md]",
+  "description": "GMM backend comparison, learned surrogate. Table tab:gmm_backend_comparison; average over seeds 200-204. [derived from run learned_gmm_navigation_h64_no_obstacle/exp_20260411_084338; see configs/paper/manifest/MANIFEST.md]",
   "distributions": {
     "rho_0": {
       "type": "gaussian",

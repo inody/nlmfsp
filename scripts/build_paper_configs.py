@@ -59,14 +59,6 @@ SAME = (
 )
 
 
-def snapshot(artifact: str, role: str) -> dict:
-    """Load the single snapshot for one artifact role."""
-    matches = sorted(SNAPSHOTS.glob(f"{artifact}__{role}__*.config.json"))
-    if len(matches) != 1:
-        raise SystemExit(f"expected exactly one snapshot for {artifact}/{role}, got {len(matches)}")
-    return json.loads(matches[0].read_text())
-
-
 def interactions_block(cfg: dict) -> dict:
     """Rebuild the `interactions` block from resolved values.
 
@@ -74,10 +66,7 @@ def interactions_block(cfg: dict) -> dict:
     a random-batch run needs `interaction_backend` and `random_batch_size` in
     this block to be reproducible without a command-line override.
     """
-    block: dict = {}
-    backend = cfg.get("interaction_backend")
-    if backend is not None:
-        block["interaction_backend"] = backend
+    block: dict = {"interaction_backend": resolve_backend(cfg)}
     if cfg.get("random_batch_size") is not None:
         block["random_batch_size"] = cfg["random_batch_size"]
     block["drift_type"] = cfg.get("drift_type", "zero")
@@ -134,67 +123,143 @@ def build(artifact: str, role: str, template: str, name: str, description: str) 
 
 # Each entry is one paper artifact/role: the snapshot it derives from, the
 # problem JSON supplying structure, and where the canonical config is written.
-SPEC = [
-    ("gmm/main_exact", "gmm_main", "exact", "gmm_navigation_gaussian.json",
-     "GMM navigation, analytical interaction evaluation (w=2). Figures gmm_nav_intdrift2."),
-    ("gmm/main_nn", "gmm_main", "nn", "gmm_navigation_gaussian_learned.json",
-     "GMM navigation, learned surrogate (w=2, M_int=100). Figures gmm_nav_intdrift2."),
-    ("gmm/backend_table_nn", "gmm_backend_table", "nn_seed200",
-     "gmm_navigation_gaussian_learned_h64_no_obstacle.json",
-     "GMM backend comparison, learned surrogate (M_int=200, width 64). Table tab:gmm_backend_comparison; "
-     "sweep seed over 200-204."),
-    ("gmm/backend_table_rb", "gmm_backend_table", "rb_seed200",
-     "gmm_navigation_gaussian_no_obstacle.json",
-     "GMM backend comparison, random batch (M_RB=128). Table tab:gmm_backend_comparison; "
-     "sweep seed over 200-204."),
-    ("gmm/strength_sweep_exact", "gmm_strength", "exact_w2", "gmm_navigation_gaussian.json",
-     "GMM interaction-strength sweep, analytical. Figure gmm_interaction_strength_compare; "
-     "sweep int_drift_weight over 1, 2, 4, 8."),
-    ("gmm/strength_sweep_nn", "gmm_strength", "nn_w2", "gmm_navigation_gaussian_learned.json",
-     "GMM interaction-strength sweep, learned surrogate. Figure gmm_interaction_strength_compare; "
-     "sweep int_drift_weight over 1, 2, 4, 8."),
+# Which problem JSON supplies the structural parts (distributions, obstacles,
+# visualization limits) for each artifact family. Everything else is read from
+# the run itself.
+TEMPLATES = {
+    ("gmm", "exact"): "gmm_navigation_gaussian.json",
+    ("gmm", "nn"): "gmm_navigation_gaussian_learned.json",
+    ("gmm", "random_batch"): "gmm_navigation_gaussian_no_obstacle.json",
+    ("vneck", "exact"): "vneck_navigation.json",
+    ("vneck", "nn"): "vneck_navigation_learned.json",
+    ("vneck", "random_batch"): "vneck_navigation.json",
+    ("opinion", "exact"): "opinion_1k_bounded_confidence_cost_off.json",
+    ("opinion", "nn"): "opinion_1k_bounded_confidence_learned_cost_off.json",
+    ("opinion", "random_batch"): "opinion_1k_bounded_confidence_cost_off.json",
+}
+# The GMM backend table used the no-obstacle problem; the rest use the obstacle one.
+TEMPLATE_OVERRIDES = {
+    ("gmm_backend_table", "nn"): "gmm_navigation_gaussian_learned_h64_no_obstacle.json",
+    ("gmm_backend_table", "random_batch"): "gmm_navigation_gaussian_no_obstacle.json",
+}
 
-    ("vneck/main_exact", "vneck_main", "exact", "vneck_navigation.json",
-     "V-neck with directional congestion, analytical evaluation. Figures vneck_pedestrian_visual."),
-    ("vneck/main_nn", "vneck_main", "nn", "vneck_navigation_learned.json",
-     "V-neck with directional congestion, learned surrogate (M_int=100). Figures vneck_pedestrian_visual."),
-    ("vneck/backend_table_nn", "vneck_backend_table", "nn_seed310", "vneck_navigation_learned.json",
-     "V-neck backend comparison, learned surrogate (M_int=200, width 64). "
-     "Table tab:vneck_backend_comparison; sweep seed over 310-317."),
-    ("vneck/backend_table_rb", "vneck_backend_table", "rb_seed310", "vneck_navigation.json",
-     "V-neck backend comparison, random batch (M_RB=128). "
-     "Table tab:vneck_backend_comparison; sweep seed over 310-317."),
+# Human-readable descriptions per artifact, filled in with the sweep value.
+ARTIFACTS = {
+    "gmm_main": "GMM navigation, {backend}. Figures gmm_nav_intdrift2.",
+    "gmm_strength": "GMM interaction-strength sweep at w={w}, {backend}. Figure gmm_interaction_strength_compare.",
+    "gmm_backend_table": "GMM backend comparison, {backend}. Table tab:gmm_backend_comparison; average over seeds 200-204.",
+    "gmm_agents_sweep": "GMM runtime vs population size at N={n}, {backend}. Figure gmm_nav_intdrift2/time_sweep_time_per_iter.",
+    "vneck_main": "V-neck with directional congestion, {backend}. Figures vneck_pedestrian_visual.",
+    "vneck_strength": "V-neck congestion-strength sweep at w={w}, {backend}. Figure vneck_pedestrian_visual/*_timeseries.",
+    "vneck_backend_table": "V-neck backend comparison, {backend}. Table tab:vneck_backend_comparison; average over seeds 310-317.",
+    "vneck_agents_sweep": "V-neck runtime vs population size at N={n}, {backend}. Figure vneck_pedestrian_visual/time_per_iteration_vs_agents.",
+    "opinion_main": "Opinion bounded confidence (d=10), {backend}. Figures opinion_bounded_confidence_n400.",
+    "opinion_strength_sweep": "Opinion interaction-strength sweep at w={w}, {backend}. Figure opinion_bounded_confidence_strength_sweep.",
+    "opinion_backend_table": "Opinion backend comparison, {backend}. Table tab:opinion_backend_comparison; average over seeds 43-45.",
+    "opinion_agents_sweep": "Opinion runtime vs population size at N={n}, {backend}. Figure opinion_bounded_confidence_agents_sweep.",
+}
+FAMILY = {"gmm": "gmm", "vneck": "vneck", "opinion": "opinion"}
 
-    ("opinion/main_exact", "opinion_main", "exact", "opinion_1k_bounded_confidence_cost_off.json",
-     "Opinion bounded confidence (d=10), analytical evaluation. Figures opinion_bounded_confidence_n400."),
-    ("opinion/main_nn", "opinion_main", "nn", "opinion_1k_bounded_confidence_learned_cost_off.json",
-     "Opinion bounded confidence (d=10), learned surrogate (M_int=100). "
-     "Figures opinion_bounded_confidence_n400."),
-    ("opinion/main_rb", "opinion_main", "rb", "opinion_1k_bounded_confidence_cost_off.json",
-     "Opinion bounded confidence (d=10), random batch. Figures opinion_bounded_confidence_n400."),
-    ("opinion/backend_table_nn", "opinion_backend_table", "nn_seed43",
-     "opinion_1k_bounded_confidence_learned_cost_off.json",
-     "Opinion backend comparison, learned surrogate (M_int=100). "
-     "Table tab:opinion_backend_comparison; sweep seed over 43-45."),
-    ("opinion/backend_table_rb", "opinion_backend_table", "rb_seed43",
-     "opinion_1k_bounded_confidence_cost_off.json",
-     "Opinion backend comparison, random batch (M_RB=80). "
-     "Table tab:opinion_backend_comparison; sweep seed over 43-45."),
-]
+
+# Sweep points that were also run for a different number of outer iterations.
+# Three opinion strength points have both a 30- and a 90-iteration run, so the
+# iteration count has to appear in the name or the two would collide.
+def sweep_label(artifact: str, cfg: dict, varying_outer: bool = False) -> str:
+    """The part of a name that distinguishes one sweep point from its siblings.
+
+    Seeds are deliberately not part of it: ``--seed`` is a published option, so
+    runs that differ only by seed share a config.
+    """
+    parts = []
+    if artifact.endswith("agents_sweep"):
+        parts.append(f"n{cfg['n_agents']}")
+    if artifact.endswith(("strength", "strength_sweep")):
+        weight = cfg.get("int_cost_weight") if cfg.get("cost_type") != "zero" else cfg.get("int_drift_weight")
+        parts.append("w" + f"{weight:g}".replace(".", "p"))
+    if varying_outer:
+        parts.append(f"it{cfg['n_outer_iterations']}")
+    return ("_" + "_".join(parts)) if parts else ""
+
+
+def resolve_backend(cfg: dict) -> str:
+    """Which interaction backend a run used.
+
+    Runs from before the backend field existed record it as null. For those, the
+    learning flags decide, exactly as the CLI layer does: a run that trains a
+    surrogate is a learned run, otherwise the sums were evaluated directly.
+    Reading the null as "exact" would silently mislabel ten learned runs in the
+    GMM population sweep.
+    """
+    backend = cfg.get("interaction_backend")
+    if backend:
+        return backend
+    if cfg.get("learn_interaction_drift") or cfg.get("learn_interaction_cost"):
+        return "nn"
+    return "exact"
+
+
+def outer_varies() -> set:
+    """Sweep points whose runs disagree on the number of outer iterations."""
+    seen: dict[str, set] = {}
+    for path in sorted(SNAPSHOTS.glob("*.config.json")):
+        artifact = path.name.split("__")[0]
+        cfg = json.loads(path.read_text())["config"]
+        family = next(f for f in FAMILY if artifact.startswith(f))
+        backend = resolve_backend(cfg)
+        key = f"{family}/{artifact[len(family) + 1:]}_{backend}{sweep_label(artifact, cfg)}"
+        seen.setdefault(key, set()).add(cfg.get("n_outer_iterations"))
+    return {k for k, v in seen.items() if len(v) > 1}
+
+
+def collect() -> dict:
+    """One entry per config the paper needs, keyed by its output path."""
+    ambiguous = outer_varies()
+    out = {}
+    for path in sorted(SNAPSHOTS.glob("*.config.json")):
+        artifact = path.name.split("__")[0]
+        raw = json.loads(path.read_text())
+        cfg = raw["config"]
+        family = next(f for f in FAMILY if artifact.startswith(f))
+        backend = resolve_backend(cfg)
+        template = (TEMPLATE_OVERRIDES.get((artifact, backend))
+                    or TEMPLATES[(family, backend)])
+
+        kind = artifact[len(family) + 1:]
+        base = f"{family}/{kind}_{backend}{sweep_label(artifact, cfg)}"
+        rel = f"{family}/{kind}_{backend}{sweep_label(artifact, cfg, base in ambiguous)}"
+        if rel in out:
+            continue  # siblings differing only by seed share one config
+        weight = cfg.get("int_cost_weight") if cfg.get("cost_type") != "zero" else cfg.get("int_drift_weight")
+        description = ARTIFACTS[artifact].format(
+            backend={"exact": "analytical evaluation", "nn": "learned surrogate",
+                     "random_batch": "random batch"}[backend],
+            w=f"{weight:g}" if weight is not None else "?", n=cfg.get("n_agents"))
+        out[rel] = (raw, template, description)
+    return out
 
 
 def main() -> None:
     written = []
-    for rel_path, artifact, role, template, description in SPEC:
-        name = rel_path.replace("/", "_")
-        config = build(artifact, role, template, name, description)
+    for rel_path, (raw, template, description) in sorted(collect().items()):
+        cfg = raw["config"]
+        problem = json.loads((PROBLEMS / template).read_text())
+        provenance = (f" [derived from run {raw['scenario_name']}/{raw['experiment_id']}; "
+                      f"see configs/paper/manifest/MANIFEST.md]")
+        config = {"name": rel_path.replace("/", "_"),
+                  "description": description + provenance}
+        for key in STRUCTURAL_KEYS:
+            if key in problem:
+                config[key] = problem[key]
+        config["interactions"] = interactions_block(cfg)
+        config["training"] = training_block(cfg)
+        ordered = {k: config[k] for k in ("problem_type",) if k in config}
+        ordered.update({k: v for k, v in config.items() if k != "problem_type"})
+
         out_path = OUT_ROOT / f"{rel_path}.json"
         out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(json.dumps(config, indent=2, ensure_ascii=False) + "\n")
+        out_path.write_text(json.dumps(ordered, indent=2, ensure_ascii=False) + "\n")
         written.append(out_path.relative_to(REPO_ROOT))
-    print(f"wrote {len(written)} canonical configs:")
-    for path in written:
-        print(f"  {path}")
+    print(f"wrote {len(written)} canonical configs")
 
 
 if __name__ == "__main__":

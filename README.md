@@ -69,7 +69,7 @@ for SEED in 310 311 312 313 314 315 316 317; do
     uv run python scripts/reproduce.py \
         --config configs/paper/vneck/backend_table_nn.json --seed "$SEED"
     uv run python scripts/reproduce.py \
-        --config configs/paper/vneck/backend_table_rb.json --seed "$SEED"
+        --config configs/paper/vneck/backend_table_random_batch.json --seed "$SEED"
 done
 uv run python scripts/render_vneck_pedestrian_visual_backend_table.py \
     --seeds 310 311 312 313 314 315 316 317

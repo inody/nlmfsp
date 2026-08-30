@@ -1,0 +1,106 @@
+{
+  "problem_type": "opinion_1k",
+  "name": "opinion_strength_sweep_nn_w4",
+  "description": "Opinion interaction-strength sweep at w=4, learned surrogate. Figure opinion_bounded_confidence_strength_sweep. [derived from run opinion_bounded_confidence_weight_sweep_nn_w4p0_seed42/exp_20260525_144304; see configs/paper/manifest/MANIFEST.md]",
+  "dim": 10,
+  "distributions": {
+    "rho_0": {
+      "type": "gaussian",
+      "mean": [
+        0.0
+      ],
+      "std": 0.25
+    },
+    "rho_1": {
+      "type": "gaussian",
+      "mean": [
+        0.0
+      ],
+      "std": 3.0
+    }
+  },
+  "base_functions": {
+    "drift": {
+      "type": "zero"
+    },
+    "cost": {
+      "type": "zero"
+    }
+  },
+  "visualization": {},
+  "interactions": {
+    "interaction_backend": "nn",
+    "drift_type": "bounded_confidence",
+    "drift_params": {
+      "weight": 4.0,
+      "sigma": 1.5
+    },
+    "cost_type": "zero"
+  },
+  "training": {
+    "n_outer_iterations": 30,
+    "n_inner_steps": 250,
+    "n_agents": 400,
+    "n_agents_test": 400,
+    "T": 3.0,
+    "dt": 0.01,
+    "activation": "silu",
+    "hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "interaction_t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_activation": "silu",
+    "learn_interaction_drift": true,
+    "learn_interaction_cost": false,
+    "interaction_query_chunk_size": 100,
+    "interaction_ref_chunk_size": 100,
+    "interaction_time_block_size": 5,
+    "resample_interaction_sample": false,
+    "evaluate_interaction_cpu": false,
+    "sigma": 1.0,
+    "lambda_ipf": 1.0,
+    "lambda_td": 1.0,
+    "lambda_fk": 1.0,
+    "lambda_boundary": 1.0,
+    "td_horizon": 1,
+    "td_bootstrap_from_target": true,
+    "fk_loss_norm": "l1",
+    "detach_interaction_drift_divergence": true,
+    "optimizer_type": "adamw",
+    "optimizer_weight_decay": 0.0,
+    "lr_scheduler_type": "exponential",
+    "grad_clip": 1.0,
+    "log_interval": 1,
+    "checkpoint_interval": 1,
+    "seed": 42,
+    "ema_decay": 0.99,
+    "ema_start_step": 0,
+    "ema_update_interval": 1,
+    "use_time_embedding": false,
+    "time_input_mode": "normalized",
+    "time_embed_dim": 128,
+    "use_time_index_normalization": true,
+    "time_index_interval": 100.0,
+    "interaction_steps": 100,
+    "lr_value": 0.001,
+    "lr_grad": 0.0005,
+    "lr_interaction": 0.0005,
+    "lr_decay": 0.999,
+    "use_multistep_td": true,
+    "device": "auto"
+  }
+}

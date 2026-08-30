@@ -1,7 +1,7 @@
 {
   "problem_type": "vneck_navigation",
   "name": "vneck_main_nn",
-  "description": "V-neck with directional congestion, learned surrogate (M_int=100). Figures vneck_pedestrian_visual. [derived from run vneck_pedestrian_visual_strength_nn_normalized_w1_seed300/exp_20260610_035948; see configs/paper/manifest/MANIFEST.md]",
+  "description": "V-neck with directional congestion, learned surrogate. Figures vneck_pedestrian_visual. [derived from run vneck_pedestrian_visual_strength_nn_normalized_w1_seed300/exp_20260610_035948; see configs/paper/manifest/MANIFEST.md]",
   "distributions": {
     "rho_0": {
       "type": "gaussian",

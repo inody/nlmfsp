@@ -344,7 +344,7 @@
     "ema_start_step": 0,
     "ema_update_interval": 1,
     "no_experiment_dir": false,
-    "problem_config": "configs/problems/gmm_navigation_gaussian.json",
+    "problem_config": "configs/paper/gmm/main_exact.json",
     "name": "gmm_agents_n400_analytic"
   },
   "config_merged": {
@@ -625,7 +625,7 @@
     "metrics_output": null,
     "skip_plots": true,
     "no_experiment_dir": false,
-    "problem_config": "configs/problems/gmm_navigation_gaussian.json",
+    "problem_config": "configs/paper/gmm/main_exact.json",
     "name": "gmm_agents_n400_analytic"
   }
 }

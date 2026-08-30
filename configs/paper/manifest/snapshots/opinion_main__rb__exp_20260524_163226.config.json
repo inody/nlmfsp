@@ -20,7 +20,7 @@
     "interaction_query_chunk_size": 100,
     "interaction_ref_chunk_size": 100,
     "interaction_time_block_size": 5,
-    "problem_config_path": "<repo>/configs/problems/opinion_1k_bounded_confidence_cost_off.json",
+    "problem_config_path": "<repo>/configs/paper/opinion/main_exact.json",
     "n_outer_iterations": 30,
     "n_inner_steps": 250,
     "n_interaction_steps": 0,
@@ -167,7 +167,7 @@
     "ema_start_step": 0,
     "ema_update_interval": 1,
     "no_experiment_dir": false,
-    "problem_config": "configs/problems/opinion_1k_bounded_confidence_cost_off.json",
+    "problem_config": "configs/paper/opinion/main_exact.json",
     "name": "rb100_opinion_1k_bounded_confidence_cost_off_n400_dt001_sigma1_clip1"
   },
   "config_merged": {
@@ -185,7 +185,7 @@
     "interaction_query_chunk_size": 100,
     "interaction_ref_chunk_size": 100,
     "interaction_time_block_size": 5,
-    "problem_config_path": "<repo>/configs/problems/opinion_1k_bounded_confidence_cost_off.json",
+    "problem_config_path": "<repo>/configs/paper/opinion/main_exact.json",
     "n_outer_iterations": 30,
     "n_inner_steps": 250,
     "n_interaction_steps": 0,
@@ -266,7 +266,7 @@
     "metrics_output": null,
     "skip_plots": false,
     "no_experiment_dir": false,
-    "problem_config": "configs/problems/opinion_1k_bounded_confidence_cost_off.json",
+    "problem_config": "configs/paper/opinion/main_exact.json",
     "name": "rb100_opinion_1k_bounded_confidence_cost_off_n400_dt001_sigma1_clip1"
   }
 }

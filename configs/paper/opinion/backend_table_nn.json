@@ -1,7 +1,7 @@
 {
   "problem_type": "opinion_1k",
   "name": "opinion_backend_table_nn",
-  "description": "Opinion backend comparison, learned surrogate (M_int=100). Table tab:opinion_backend_comparison; sweep seed over 43-45. [derived from run learned_opinion_1k_bounded_confidence_cost_off_n400_dt001_sigma1_int100_clip1_detachdiv_seed43/exp_20260531_082939; see configs/paper/manifest/MANIFEST.md]",
+  "description": "Opinion backend comparison, learned surrogate. Table tab:opinion_backend_comparison; average over seeds 43-45. [derived from run learned_opinion_1k_bounded_confidence_cost_off_n400_dt001_sigma1_int100_clip1_detachdiv_seed43/exp_20260531_082939; see configs/paper/manifest/MANIFEST.md]",
   "dim": 10,
   "distributions": {
     "rho_0": {

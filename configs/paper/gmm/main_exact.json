@@ -1,7 +1,7 @@
 {
   "problem_type": "gmm_navigation",
   "name": "gmm_main_exact",
-  "description": "GMM navigation, analytical interaction evaluation (w=2). Figures gmm_nav_intdrift2. [derived from run analytical_gmm_navigation/exp_20260528_125418; see configs/paper/manifest/MANIFEST.md]",
+  "description": "GMM navigation, analytical evaluation. Figures gmm_nav_intdrift2. [derived from run analytical_gmm_navigation/exp_20260528_125418; see configs/paper/manifest/MANIFEST.md]",
   "distributions": {
     "rho_0": {
       "type": "gaussian",

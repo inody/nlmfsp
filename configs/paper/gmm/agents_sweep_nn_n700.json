@@ -1,0 +1,209 @@
+{
+  "problem_type": "gmm_navigation",
+  "name": "gmm_agents_sweep_nn_n700",
+  "description": "GMM runtime vs population size at N=700, learned surrogate. Figure gmm_nav_intdrift2/time_sweep_time_per_iter. [derived from run learned_gmm_agents_n700_learned/exp_20260311_040512_lry1e-03_lrz5e-04_n700_ipf1_td1_fk1_b1_ema0.990; see configs/paper/manifest/MANIFEST.md]",
+  "distributions": {
+    "rho_0": {
+      "type": "gaussian",
+      "mean": [
+        0.0,
+        0.0
+      ],
+      "std": 1.0
+    },
+    "rho_1": {
+      "type": "gaussian_mixture",
+      "components": [
+        {
+          "mean": [
+            16.0,
+            0.0
+          ],
+          "std": 1.0,
+          "weight": 0.125
+        },
+        {
+          "mean": [
+            11.314,
+            11.314
+          ],
+          "std": 1.0,
+          "weight": 0.125
+        },
+        {
+          "mean": [
+            0.0,
+            16.0
+          ],
+          "std": 1.0,
+          "weight": 0.125
+        },
+        {
+          "mean": [
+            -11.314,
+            11.314
+          ],
+          "std": 1.0,
+          "weight": 0.125
+        },
+        {
+          "mean": [
+            -16.0,
+            0.0
+          ],
+          "std": 1.0,
+          "weight": 0.125
+        },
+        {
+          "mean": [
+            -11.314,
+            -11.314
+          ],
+          "std": 1.0,
+          "weight": 0.125
+        },
+        {
+          "mean": [
+            0.0,
+            -16.0
+          ],
+          "std": 1.0,
+          "weight": 0.125
+        },
+        {
+          "mean": [
+            11.314,
+            -11.314
+          ],
+          "std": 1.0,
+          "weight": 0.125
+        }
+      ]
+    }
+  },
+  "base_functions": {
+    "drift": {
+      "type": "zero"
+    },
+    "cost": {
+      "type": "multi_obstacle",
+      "obstacles": [
+        {
+          "center": [
+            6.0,
+            6.0
+          ],
+          "radius": 1.5,
+          "penalty": 1500.0,
+          "description": "Upper-right obstacle",
+          "mode": "soft",
+          "beta": 6.0
+        },
+        {
+          "center": [
+            6.0,
+            -6.0
+          ],
+          "radius": 1.5,
+          "penalty": 1500.0,
+          "description": "Lower-right obstacle",
+          "mode": "soft",
+          "beta": 6.0
+        },
+        {
+          "center": [
+            -6.0,
+            -6.0
+          ],
+          "radius": 1.5,
+          "penalty": 1500.0,
+          "description": "Lower-left obstacle",
+          "mode": "soft",
+          "beta": 6.0
+        }
+      ]
+    }
+  },
+  "visualization": {
+    "xlim": [
+      -20.0,
+      20.0
+    ],
+    "ylim": [
+      -20.0,
+      20.0
+    ]
+  },
+  "interactions": {
+    "interaction_backend": "nn",
+    "drift_type": "gaussian",
+    "drift_params": {
+      "weight": 1.0,
+      "sigma": 2.0
+    },
+    "cost_type": "zero"
+  },
+  "training": {
+    "n_outer_iterations": 10,
+    "n_inner_steps": 250,
+    "n_agents": 700,
+    "n_agents_test": 700,
+    "T": 1.0,
+    "dt": 0.01,
+    "activation": "silu",
+    "hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "interaction_t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_activation": "silu",
+    "learn_interaction_drift": true,
+    "learn_interaction_cost": false,
+    "interaction_query_chunk_size": 200,
+    "interaction_ref_chunk_size": 200,
+    "interaction_time_block_size": 50,
+    "resample_interaction_sample": false,
+    "evaluate_interaction_cpu": false,
+    "sigma": 1.0,
+    "lambda_ipf": 1.0,
+    "lambda_td": 1.0,
+    "lambda_fk": 1.0,
+    "lambda_boundary": 1.0,
+    "td_horizon": 1,
+    "td_bootstrap_from_target": true,
+    "fk_loss_norm": "l1",
+    "optimizer_type": "adamw",
+    "optimizer_weight_decay": 0.0,
+    "lr_scheduler_type": "exponential",
+    "log_interval": 1,
+    "checkpoint_interval": 1,
+    "seed": 42,
+    "ema_decay": 0.99,
+    "ema_start_step": 0,
+    "ema_update_interval": 1,
+    "use_time_embedding": false,
+    "time_embed_dim": 128,
+    "use_time_index_normalization": true,
+    "time_index_interval": 100.0,
+    "interaction_steps": 50,
+    "lr_value": 0.001,
+    "lr_grad": 0.0005,
+    "lr_interaction": 0.0001,
+    "lr_decay": 0.999,
+    "use_multistep_td": true,
+    "device": "auto"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "problem_type": "vneck_navigation",
-  "name": "vneck_backend_table_rb",
-  "description": "V-neck backend comparison, random batch (M_RB=128). Table tab:vneck_backend_comparison; sweep seed over 310-317. [derived from run vneck_pedestrian_visual_backend_rb128_gpu_seed310/exp_20260611_182658; see configs/paper/manifest/MANIFEST.md]",
+  "name": "vneck_strength_nn_w4",
+  "description": "V-neck congestion-strength sweep at w=4, learned surrogate. Figure vneck_pedestrian_visual/*_timeseries. [derived from run vneck_pedestrian_visual_strength_nn_normalized_w4_seed300/exp_20260610_130247; see configs/paper/manifest/MANIFEST.md]",
   "distributions": {
     "rho_0": {
       "type": "gaussian",
@@ -48,12 +48,11 @@
     ]
   },
   "interactions": {
-    "interaction_backend": "random_batch",
-    "random_batch_size": 128,
+    "interaction_backend": "nn",
     "drift_type": "zero",
     "cost_type": "pedestrian_visual",
     "cost_params": {
-      "weight": 1.0,
+      "weight": 4.0,
       "sigma": 1.0
     }
   },
@@ -74,10 +73,20 @@
       128,
       128
     ],
+    "interaction_hidden_dims": [
+      128,
+      128,
+      128
+    ],
+    "interaction_t_hidden_dims": [
+      128,
+      128
+    ],
+    "interaction_activation": "silu",
     "learn_interaction_drift": false,
-    "learn_interaction_cost": false,
-    "standardize_interaction_targets": false,
-    "interaction_input_scale": 1.0,
+    "learn_interaction_cost": true,
+    "standardize_interaction_targets": true,
+    "interaction_input_scale": 7.0,
     "interaction_query_chunk_size": 200,
     "interaction_ref_chunk_size": 200,
     "interaction_time_block_size": 50,
@@ -97,7 +106,7 @@
     "lr_scheduler_type": "exponential",
     "log_interval": 1,
     "checkpoint_interval": 1,
-    "seed": 310,
+    "seed": 300,
     "ema_decay": 0.99,
     "ema_start_step": 0,
     "ema_update_interval": 1,
@@ -106,9 +115,10 @@
     "time_embed_dim": 128,
     "use_time_index_normalization": false,
     "time_index_interval": 100.0,
-    "interaction_steps": 0,
+    "interaction_steps": 100,
     "lr_value": 0.001,
     "lr_grad": 0.0005,
+    "lr_interaction": 0.001,
     "lr_decay": 0.999,
     "use_multistep_td": true,
     "device": "auto"

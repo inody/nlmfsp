@@ -94,8 +94,11 @@ def test_paper_config_records_its_provenance(config_path):
 def test_configs_match_the_values_stated_in_the_manuscript(configs, experiment):
     """Configs for one experiment must agree with each other and with the paper."""
     expected = PAPER_VALUES[experiment]
-    relevant = {name: cfg for name, cfg in configs.items() if name.startswith(f"{experiment}/")}
-    assert relevant, f"no configs for {experiment}"
+    # Sweeps vary N or the interaction weight by construction, so the values the
+    # manuscript quotes apply to the main configurations.
+    relevant = {name: cfg for name, cfg in configs.items()
+                if name.startswith(f"{experiment}/main_")}
+    assert relevant, f"no main configs for {experiment}"
 
     for name, config in relevant.items():
         training = config["training"]
@@ -109,11 +112,11 @@ def test_backend_sizes_match_the_published_tables(configs):
     """M_int and M_RB are the quantities the backend tables are labelled with."""
     expected = {
         "gmm/backend_table_nn": ("interaction_steps", 200),
-        "gmm/backend_table_rb": ("random_batch_size", 128),
+        "gmm/backend_table_random_batch": ("random_batch_size", 128),
         "vneck/backend_table_nn": ("interaction_steps", 200),
-        "vneck/backend_table_rb": ("random_batch_size", 128),
+        "vneck/backend_table_random_batch": ("random_batch_size", 128),
         "opinion/backend_table_nn": ("interaction_steps", 100),
-        "opinion/backend_table_rb": ("random_batch_size", 80),
+        "opinion/backend_table_random_batch": ("random_batch_size", 80),
     }
     for name, (key, value) in expected.items():
         config = configs[name]

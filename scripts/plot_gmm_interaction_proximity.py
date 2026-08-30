@@ -76,7 +76,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--problem-config",
         type=str,
-        default="configs/problems/gmm_navigation_gaussian.json",
+        default="configs/paper/gmm/main_exact.json",
         help="Problem config path stored in cli_args.problem_config.",
     )
     parser.add_argument(
