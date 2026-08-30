@@ -20,6 +20,30 @@ it and records that run's resolved configuration and metrics. The configs were
 derived from those runs, so they state what actually executed rather than what
 was intended.
 
+## What reproducing a figure costs, and what is not shipped
+
+**Trained weights are not published.** This repository carries the resolved
+configuration and the recorded metrics of every run behind the paper
+(`configs/paper/manifest/`), but not the checkpoints: they come to roughly 29 GB,
+which does not belong in a git repository. Anything that replays particles from a
+trained model — the trajectory figures, the PCA snapshots — therefore requires
+training the run first.
+
+The cost is not small. Reproducing the two GMM configurations behind
+`fig:gmm_trajectory_comparison` on one NVIDIA RTX 6000 Ada took:
+
+| | wall-clock |
+|---|---|
+| `configs/paper/gmm/main_exact.json` | 8.2 h |
+| `configs/paper/gmm/main_nn.json` | 3.3 h |
+
+That is one figure pair. The strength sweeps multiply this by the number of
+interaction weights, and the backend tables by the number of seeds.
+
+The ratio between those two numbers is itself the paper's main claim, and it
+reproduced: the learned surrogate finished in a little over a third of the time
+the exact evaluation needed, at a comparable analytical loss.
+
 ## Surrogate learning rate
 
 The surrogate networks use a learning rate of $5\times10^{-4}$ in the GMM and

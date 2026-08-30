@@ -79,11 +79,13 @@ uv run python scripts/render_vneck_pedestrian_visual_backend_table.py \
 and the settings it used, so the configs state what actually ran rather than
 what was intended.
 
-**Before comparing numbers, read [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).**
-It covers what re-running on other hardware does and does not tell you — in
-particular the wall-clock timings, which came from a GPU that is no longer
-available — and two places where the code and the manuscript use different
-conventions.
+**Before running anything, read [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).**
+Trained weights are not published, so a trajectory figure means training the run
+first: the two GMM configurations above took 8.2 h and 3.3 h on one RTX 6000 Ada.
+That file also covers what re-running on other hardware does and does not tell
+you — in particular the wall-clock timings, which came from a GPU that is no
+longer available — and two places where the code and the manuscript use
+different conventions.
 
 ## Repository structure
 
