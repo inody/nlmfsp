@@ -92,6 +92,21 @@ uv run python scripts/render_vneck_pedestrian_visual_backend_table.py \
 This reproduces the published table exactly from the runs recorded in the
 manifest. The seed sets for the other tables are listed in `MANIFEST.md`.
 
+## Checkpoint selection
+
+A full clean-tree campaign ran all 148 configurations to completion on an RTX
+6000 Ada. All runs produced finite metrics, checkpoints and figures, and no run
+exited with an error. The main trajectory and interaction-response conclusions
+were reproduced.
+
+The final checkpoint is not always the best checkpoint. Six of the 148 runs
+ended at an analytical loss more than five times their best value, even though a
+usable earlier checkpoint was present. We therefore do not rerun or replace
+those experiments: figure and table scripts select the checkpoint with the best
+analytical loss where checkpoint selection affects the reported artifact. Do
+not assume that `checkpoint_final.pt` is the appropriate checkpoint for a new
+plot or comparison.
+
 ## Hardware, and what that means for the timings
 
 The published results came from two machines, as stated in the paper's appendix:

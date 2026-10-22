@@ -75,17 +75,14 @@ uv run python scripts/render_vneck_pedestrian_visual_backend_table.py \
     --seeds 310 311 312 313 314 315 316 317
 ```
 
-`configs/paper/manifest/MANIFEST.md` records which run produced each artifact
-and the settings it used, so the configs state what actually ran rather than
-what was intended.
+`configs/paper/manifest/MANIFEST.md` links each artifact to its source run and
+records the resolved settings used to construct the configs.
 
-**Before running anything, read [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).**
-Trained weights are not published, so a trajectory figure means training the run
-first: the two GMM configurations above took 8.2 h and 3.3 h on one RTX 6000 Ada.
-That file also covers what re-running on other hardware does and does not tell
-you — in particular the wall-clock timings, which came from a GPU that is no
-longer available — and two places where the code and the manuscript use
-different conventions.
+See [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) for runtime estimates,
+hardware-dependent timing information, checkpoint selection, and implementation
+conventions. Trained weights are not included, so trajectory figures require
+training first. On one RTX 6000 Ada, the two GMM configurations above took 8.2 h
+and 3.3 h. Figure and table scripts select checkpoints by analytical loss.
 
 ## Repository structure
 
